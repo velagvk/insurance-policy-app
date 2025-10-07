@@ -4,9 +4,10 @@ import React, { useState, useEffect, useRef } from 'react';
 // API Integration
 // ============================================================================
 
-// Production backend URL on Render
-// For local development, change this to 'http://localhost:8000'
-const API_BASE_URL = 'https://insurance-backend-2mhv.onrender.com/api';
+// API URL configuration - auto-detects environment
+const API_BASE_URL = window.location.hostname === 'localhost'
+  ? 'http://localhost:8000/api'  // Local development
+  : 'https://insurance-backend-2mhv.onrender.com/api';  // Production on Render
 
 // Log the API URL for debugging
 console.log('🔗 API Base URL:', API_BASE_URL);
