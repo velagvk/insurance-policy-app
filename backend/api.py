@@ -38,7 +38,6 @@ app = FastAPI(title="Insurance Policy API", version="1.0.0")
 # It ensures all responses, including errors from other middleware, have CORS headers.
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"https://.*\.onrender\.com",  # Allow all Render deployments
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
