@@ -4,9 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 // API Integration
 // ============================================================================
 
-// Use ngrok backend URL for public access
-// When running locally, change this to 'http://localhost:8000'
-const API_BASE_URL = 'https://729e38e0ac95.ngrok-free.app/api';
+// Production backend URL on Render
+// For local development, change this to 'http://localhost:8000'
+const API_BASE_URL = 'https://insurance-backend-2mhv.onrender.com/api';
 
 // Log the API URL for debugging
 console.log('🔗 API Base URL:', API_BASE_URL);
