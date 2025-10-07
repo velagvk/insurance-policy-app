@@ -11,7 +11,7 @@ services:
         sync: false  # You'll add this manually in Render dashboard
       - key: PYTHON_VERSION
         value: 3.11.0
-    healthCheckPath: /
+    healthCheckPath: /health
 
   # Frontend Static Site
   - type: web
