@@ -34,6 +34,23 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Insurance Policy API", version="1.0.0")
 
+# Add CORS middleware - THIS MUST BE THE FIRST MIDDLEWARE
+# It ensures all responses, including errors from other middleware, have CORS headers.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"https://.*\.onrender\.com",  # Allow all Render deployments
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://10.0.0.207:3000",
+        "https://insurance-frontend-1olt.onrender.com",  # Production frontend on Render
+        "https://insurance-policy-app.vercel.app",  # Vercel (if still needed)
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Rate limiting storage
 rate_limit_storage = defaultdict(list)
 RATE_LIMIT_REQUESTS = 10  # max requests per window
@@ -86,22 +103,6 @@ async def global_exception_handler(request: Request, exc: Exception):
             "timestamp": datetime.now(timezone.utc).isoformat()
         }
     )
-
-# Add CORS middleware - allow frontend from Render and local development
-app.add_middleware(
-    CORSMiddleware,
-    allow_origin_regex=r"https://.*\.onrender\.com",  # Allow all Render deployments
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://10.0.0.207:3000",
-        "https://insurance-frontend-1olt.onrender.com",  # Production frontend on Render
-        "https://insurance-policy-app.vercel.app",  # Vercel (if still needed)
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 # Initialize database and services with error handling
 try:
