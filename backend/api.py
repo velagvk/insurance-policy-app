@@ -94,7 +94,8 @@ app.add_middleware(
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "http://10.0.0.207:3000",  # Local network access
-        "*"  # Allow all origins for testing (remove in production)
+        "https://insurance-policy-app.vercel.app",  # Production frontend
+        "https://insurance-policy-l7atvjoc0-vijays-projects-96f2508f.vercel.app",  # Vercel deployment URL
     ],
     allow_credentials=True,
     allow_methods=["*"],
