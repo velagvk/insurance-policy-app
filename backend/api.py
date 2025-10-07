@@ -87,15 +87,28 @@ async def global_exception_handler(request: Request, exc: Exception):
         }
     )
 
-# Add CORS middleware to allow frontend connections
+# CORS configuration - allow Vercel deployments and local development
+def is_allowed_origin(origin: str) -> bool:
+    """Check if origin is allowed for CORS"""
+    allowed_patterns = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://10.0.0.207:3000",
+        "https://insurance-policy-app.vercel.app",
+        # Allow all Vercel deployment URLs for this project
+        "https://insurance-policy-",  # Matches all Vercel preview deployments
+    ]
+    return any(origin.startswith(pattern) for pattern in allowed_patterns)
+
+# Add CORS middleware with dynamic origin validation
 app.add_middleware(
     CORSMiddleware,
+    allow_origin_regex=r"https://insurance-policy-.*\.vercel\.app",  # Allow all Vercel deployments
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "http://10.0.0.207:3000",  # Local network access
-        "https://insurance-policy-app.vercel.app",  # Production frontend
-        "https://insurance-policy-l7atvjoc0-vijays-projects-96f2508f.vercel.app",  # Vercel deployment URL
+        "http://10.0.0.207:3000",
+        "https://insurance-policy-app.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
