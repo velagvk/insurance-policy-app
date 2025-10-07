@@ -91,18 +91,32 @@ class GeminiPolicyService:
         # Initialize the new Google GenAI client
         self.client = genai.Client(api_key=self.api_key)
 
-        # Initialize database and embedding model for retrieval
+        # Initialize database
         self.db = PolicyDatabase()
-        self.embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
-        # Initialize cross-encoder for reranking (improves relevance accuracy by 25%)
-        self.reranker = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+        # Lazy load models (only when first needed to save memory at startup)
+        self._embedding_model = None
+        self._reranker = None
 
         # Initialize model router for cost optimization
         self.model_router = ModelRouter()
 
         # Path to extracted policy data (fallback)
         self.policy_data_dir = Path("results/health_file_api")
+
+    @property
+    def embedding_model(self):
+        """Lazy load embedding model only when needed"""
+        if self._embedding_model is None:
+            self._embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+        return self._embedding_model
+
+    @property
+    def reranker(self):
+        """Lazy load reranker model only when needed"""
+        if self._reranker is None:
+            self._reranker = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+        return self._reranker
     
     def get_policy_document(self, policy_id: str) -> Optional[Dict[str, Any]]:
         """
