@@ -17,7 +17,6 @@ services:
   - type: web
     name: insurance-frontend
     runtime: static
-    plan: free
     buildCommand: cd ui && npm install && npm run build
     staticPublishPath: ui/build
     headers:
