@@ -43,8 +43,9 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "http://10.0.0.207:3000",
         "https://insurance-frontend-1olt.onrender.com",  # Production frontend on Render
-        "https://insurance-policy-app.vercel.app",  # Vercel (if still needed)
+        "https://ui-c5z9d50j2-vijays-projects-96f2508f.vercel.app",  # Vercel deployment
     ],
+    allow_origin_regex=r"https://.*\.vercel\.app",  # Allow all Vercel deployments
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

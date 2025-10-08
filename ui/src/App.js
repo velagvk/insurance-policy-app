@@ -7,7 +7,7 @@ import React, { useState, useEffect, useRef } from 'react';
 // API URL configuration - auto-detects environment
 const API_BASE_URL = window.location.hostname === 'localhost'
   ? 'http://localhost:8000/api'  // Local development
-  : 'https://insurance-backend-2mhv.onrender.com/api';  // Production on Render
+  : 'https://insurance-backend-649910619056.us-central1.run.app/api';  // Production on Render
 
 // Log the API URL for debugging
 console.log('🔗 API Base URL:', API_BASE_URL);
@@ -55,6 +55,51 @@ const askGeminiQuestion = async (policy, question, chatHistory = []) => {
     throw error;
   }
 };
+
+// ============================================================================
+// Policy Features Configuration
+// ============================================================================
+const policyFeatures = [
+  {
+    id: 'must',
+    title: 'Must To Have',
+    description: 'Essential features that form the foundation of any good insurance policy',
+    features: [
+       'Claim Settlement Ratio',
+       'Hospital Network',
+       'Room Rent',
+       'Copayment',
+       'Restoration Benefit',
+       'Post Hospitalisation Coverage',
+    ]
+  },
+  {
+    id: 'good',
+    title: 'Good To Have',
+    description: 'Valuable additions that significantly enhance your coverage experience',
+    features: [
+      'Waiting Period',
+      'No Claim Bonus',
+      'Disease Sub limits',
+      'Alternate Treatment Coverage',
+      'Maternity Care',
+      'Newborn Care',
+      'Health Checkups',
+    ]
+  },
+  {
+    id: 'very',
+    title: 'Add On',
+    description: 'Premium features that provide maximum protection and convenience',
+    features: [
+    'Domiciliary',
+    'Outpatient Department',
+    'Lifelong Renewal',
+    'Critical Illness Rider',
+    'Accident & Disability Rider',
+    ]
+  }
+];
 
 // ============================================================================
 // Mock/Fallback Data for policies (used if API fails)
@@ -506,7 +551,6 @@ function useWindowWidth() {
 
   return windowWidth;
 }
-
 // AutoScrollingQuestions Component - For both mobile and desktop
 const AutoScrollingQuestions = ({ questions, onQuestionClick, shouldScroll }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -674,7 +718,6 @@ const AutoScrollingQuestions = ({ questions, onQuestionClick, shouldScroll }) =>
     </div>
   );
 };
-
 // Full-screen Policy Features Dropdown for Desktop - Modified to keep panel open when feature is clicked
 const PolicyFeaturesFullScreenDropdown = ({ 
   isOpen, 
@@ -1549,9 +1592,9 @@ const HomeScreen = ({ onCheckMyPolicyClick, onExplorePolicyTypesClick }) => {
       
       {/* Footer */}
       <div className="mt-auto p-4 border-t border-gray-200 flex justify-center space-x-6 text-sm text-gray-500">
-        <a href="#" className="hover:text-cyan-600">Privacy</a>
-        <a href="#" className="hover:text-cyan-600">Terms</a>
-        <a href="#" className="hover:text-cyan-600">Contact</a>
+        <a href="#privacy" className="hover:text-cyan-600">Privacy</a>
+        <a href="#terms" className="hover:text-cyan-600">Terms</a>
+        <a href="#contact" className="hover:text-cyan-600">Contact</a>
       </div>
     </div>
   );
@@ -1736,7 +1779,6 @@ const ChatHistorySidebar = ({
     </div>
   );
 };
-
 // PolicyCard Component - Mobile responsive adjustments
 const PolicyCard = ({ 
   policy, 
@@ -1967,7 +2009,6 @@ const PolicyListingScreen = React.forwardRef(({
         </div>
     );
 });
-
 // PolicyDetailPanel Component - Displays policy details in a side panel
 const PolicyDetailPanel = ({ policy, onClose }) => {
   if (!policy) return null;
@@ -2049,50 +2090,7 @@ const PolicyFeaturesPanel = ({
   policiesData  // Add policiesData prop
 }) => {
   if (!featureCategory) return null;
-  
-  // Define the policy features categories and their details
-  const policyFeatures = [
-    {
-      id: 'must',
-      title: 'Must To Have',
-      description: 'Essential features that form the foundation of any good insurance policy',
-      features: [
-         'Claim Settlement Ratio',
-         'Hospital Network',
-         'Room Rent',
-         'Copayment',
-         'Restoration Benefit',
-         'Post Hospitalisation Coverage',
-      ]
-    },
-    {
-      id: 'good',
-      title: 'Good To Have',
-      description: 'Valuable additions that significantly enhance your coverage experience',
-      features: [
-        'Waiting Period',
-        'No Claim Bonus',
-        'Disease Sub limits',
-        'Alternate Treatment Coverage',
-        'Maternity Care',
-        'Newborn Care',
-        'Health Checkups',
-      ]
-    },
-    {
-      id: 'very',
-      title: 'Add On',
-      description: 'Premium features that provide maximum protection and convenience',
-      features: [
-      'Domiciliary',
-      'Outpatient Department',
-      'Lifelong Renewal',
-      'Critical Illness Rider',
-      'Accident & Disability Rider',
-      ]
-    }
-  ];
-  
+
   const selectedFeature = policyFeatures.find(f => f.id === featureCategory);
   
   if (!selectedFeature) return null;
@@ -2157,7 +2155,6 @@ const PolicyFeaturesPanel = ({
     </div>
   );
 };
-
 // MenuSidePanel Component - Mobile responsive adjustments
 const MenuSidePanel = ({ 
   isOpen, 
@@ -2706,7 +2703,6 @@ const PolicyComparisonSidePanel = ({
     </div>
   );
 };
-
 // UploadDocumentScreen Component - New screen for uploading policy documents
 const UploadDocumentScreen = ({ onBack, onDocumentUpload }) => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -2787,7 +2783,6 @@ const UploadDocumentScreen = ({ onBack, onDocumentUpload }) => {
         </ScreenWrapper>
     );
 };
-
 // PolicyDetailScreen Component - Displays specific details about a selected policy
 const PolicyDetailScreen = ({ policy, onBack, onTalkToAdvisor, comparisonFeedback, policiesToCompareCount }) => {
   // Move the useEffect outside of the conditional return
@@ -3282,7 +3277,6 @@ const PaymentModalForCompare = ({
     </div>
   );
 };
-
 // PolicyAdvisorChat Component - Modified for split-screen view
 const PolicyAdvisorChat = ({ 
   messages, 
@@ -3331,7 +3325,8 @@ const PolicyAdvisorChat = ({
   onSelectChat, // New prop for selecting a chat
   userSubscription, // New prop for user subscription status
   onMobileCheckMyPolicyClick, // New prop for mobile check my policy button click
-  onMobilePolicyFeaturesClick // New prop for mobile policy features button click
+  onMobilePolicyFeaturesClick, // New prop for mobile policy features button click
+  policyFeatures // New prop for policy features
 }) => {
   const [inputMessage, setInputMessage] = useState('');
   const chatEndRef = React.useRef(null);
@@ -3362,49 +3357,6 @@ const PolicyAdvisorChat = ({
   
   // Get window width for responsive behavior
   const windowWidth = useWindowWidth();
-  
-  // Define the policy features categories and their details
-  const policyFeatures = [
-    {
-      id: 'must',
-      title: 'Must To Have',
-      description: 'Essential features that form the foundation of any good insurance policy',
-      features: [
-        'Claim Settlement Ratio',
-         'Hospital Network',
-         'Room Rent',
-         'Copayment',
-         'Restoration Benefit',
-         'Post Hospitalisation Coverage',
-      ]
-    },
-    {
-      id: 'good',
-      title: 'Good To Have',
-      description: 'Valuable additions that significantly enhance your coverage experience',
-      features: [
-        'Waiting Period',
-        'No Claim Bonus',
-        'Disease Sub limits',
-        'Alternate Treatment Coverage',
-        'Maternity Care',
-        'Newborn Care',
-        'Health Checkups',
-      ]
-    },
-    {
-      id: 'very',
-      title: 'Add On',
-      description: 'Premium features that provide maximum protection and convenience',
-      features: [
-      'Domiciliary',
-      'Outpatient Department',
-      'Lifelong Renewal',
-      'Critical Illness Rider',
-      'Accident & Disability Rider',
-      ]
-    }
-  ];
   
   // Toggle question expansion
   const toggleQuestion = (questionId) => {
@@ -3437,7 +3389,7 @@ const PolicyAdvisorChat = ({
         setExpandedQuestion(expandedFeatureCategory);
       }
     }
-  }, [expandedFeatureCategory]);
+  }, [expandedFeatureCategory, policyFeatures]);
   
   const handleSend = () => {
     if (inputMessage.trim() === '') return;
@@ -3731,7 +3683,6 @@ const PolicyAdvisorChat = ({
   const handleMobilePolicyFeaturesButtonClick = () => {
     onMobilePolicyFeaturesClick();
   };
-  
   return (
     <div className={`flex flex-col h-full bg-slate-50 flex-grow rounded-xl shadow-lg border border-gray-200 relative min-h-[calc(100vh-6rem)] ${(showComparisonSidePanel || showSingleComparison) ? 'sm:flex-row-reverse' : ''}`}>
       {/* Menu Side Panel */}
@@ -3771,13 +3722,6 @@ const PolicyAdvisorChat = ({
         onNewChat={() => {
           // Create a new chat
           const newChatId = 'chat-' + Date.now();
-          const newChat = {
-            id: newChatId,
-            title: 'New Chat',
-            messages: [{ id: 1, text: initialBotMessageText, sender: 'bot' }]
-          };
-          // Update chat histories in parent
-          // This is a simplified version - in a real app, you'd manage this in the parent
           onSelectChat(newChatId);
         }}
         onToggleChatSidebar={() => setShowChatHistorySidebar(false)}
@@ -3819,7 +3763,7 @@ const PolicyAdvisorChat = ({
                     viewBox="0 0 24 24" 
                     stroke="currentColor"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l7 7m0 0l-7-7m7 7h18" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l7 7m0 0l-7-7m7 7H3" />
                   </svg>
                 </button>
                 
@@ -4375,7 +4319,6 @@ const PolicyAdvisorChat = ({
     </div>
   );
 };
-
 // Main App component that orchestrates all screens and navigation
 const App = () => {
   // ============================================================================
@@ -5027,7 +4970,6 @@ const App = () => {
       navigateTo('policyAdvisorChat');
     }
   };
-  
   // Handler for chat policy features button click
   const handleChatPolicyFeaturesClick = () => {
     setShowChatPolicyFeaturesDropdown(!showChatPolicyFeaturesDropdown);
@@ -5072,7 +5014,6 @@ const App = () => {
     // This now handles the Check My Policy functionality in mobile
     handleMenuClick();
   };
-  
   // Renders the appropriate screen component based on currentScreen state
   const renderScreen = () => {
     switch (currentScreen) {
@@ -5116,6 +5057,7 @@ const App = () => {
               expandedFeatureCategory={expandedFeatureCategory}
               setExpandedFeatureCategory={setExpandedFeatureCategory}
               policiesData={policiesData}  // Pass policiesData
+              policyFeatures={policyFeatures} // Pass policyFeatures
               showChatPolicyFeaturesDropdown={showChatPolicyFeaturesDropdown}
               setShowChatPolicyFeaturesDropdown={setShowChatPolicyFeaturesDropdown}
               floatingPolicy={floatingPolicy} // Pass floating policy state
